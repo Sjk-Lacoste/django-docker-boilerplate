@@ -1,0 +1,27 @@
+version: '3'
+
+volumes:
+  pgdata:
+
+services:
+  python:
+    # image: python:3.7
+    build:
+      context: .
+      dockerfile: docker/dev/python/Dockerfile
+    volumes:
+      - ./backend:/backend
+    ports:
+      - 8000:8000
+    command: "python mange.py runserver 0.0.0.0:8000"
+
+  postgres:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER: sjk_lacoste
+      - POSTGRES_PASSWORD: password1
+      - POSTGRES_DB: db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
